@@ -33,7 +33,7 @@ public class Order {
 			sb.append(" ");
 		}
 		sb.deleteCharAt(sb.length()-1);
-		return this.customer.getName() + " ordered " + sb;
+		return "Vasia ordered " + sb;
 	}
 
 }

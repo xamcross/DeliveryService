@@ -7,32 +7,30 @@ import dmytro.korniienko.entity.Customer;
 import dmytro.korniienko.entity.Order;
 import dmytro.korniienko.entity.Pizza;
 import dmytro.korniienko.entity.PizzaType;
+import dmytro.korniienko.repo.InMemOrderRepository;
+import dmytro.korniienko.repo.OrderRepository;
 
 public class SimpleOrderService implements OrderService{
 
-	private List<Order> orderList;
+	private OrderRepository orderRepository = new InMemOrderRepository();
+	
+	private PizzaService pizzaService = new SimplePizzaService();
 
-	public SimpleOrderService() {
-		this.orderList = new ArrayList<>();
-	}
 
 	public Order placeNewOrder(Customer customer, Integer... pizzasID) {
 		List<Pizza> pizzas = new ArrayList<>();
 
 		for (Integer id : pizzasID) {
-			pizzas.add(getPizzaByID(id)); // get Pizza from predifined in-memory
+			pizzas.add(pizzaService.findPizzaById(id)); // get Pizza from predifined in-memory
 											// list
 		}
 		Order newOrder = new Order(customer, pizzas);
 
-		saveOrder(newOrder); // set Order Id and save Order to in-memory list
+		orderRepository.save(newOrder); // set Order Id and save Order to in-memory list
+		
 		return newOrder;
 	}
 
-	private void saveOrder(Order newOrder) {
-		// TODO Auto-generated method stub
-		orderList.add(newOrder);
-	}
 
 	private Pizza getPizzaByID(Integer id) {
 		// TODO Auto-generated method stub
